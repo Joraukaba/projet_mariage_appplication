@@ -2,7 +2,6 @@ package com.mariage.projet.zamak.Mariage_projet_joachim.ImplementService;
 
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InvitationDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InviteMariageDto;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.Invitations;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.InviteMariage;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.InvitationRepository;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.InviteRepositoris;
