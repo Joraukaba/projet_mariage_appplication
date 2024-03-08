@@ -1,0 +1,20 @@
+
+
+spring:
+  datasource:
+    username: postgres
+    hikari:
+      password: 8654
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/zamakmariage
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+server:
+  port: 7000
+  servlet:
+    application-display-name: gestion des invitations
