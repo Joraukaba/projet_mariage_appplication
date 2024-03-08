@@ -23,32 +23,16 @@ import java.util.stream.Collectors;
 public class InviteMariageServiceImpl  implements InviteMariageService{
 
     private final InviteRepositoris repository;
-
-    private final InvitationService services;
-
     private final InvitationRepository invitationRepository;
+
+    private  final InvitationService invitationService;
     private final ObjectsValidator<InviteMariageDto>validator;
 
     @Override
     public Integer save(InviteMariageDto dto) {
         validator.validate(dto);
         InviteMariage inviters = InviteMariageDto.formDto(dto);
-
-        boolean InviteHaveAlreadyInvitation = invitationRepository.findByInviteMariageId(inviters.getId()).isPresent();
-
-        if(InviteHaveAlreadyInvitation){
-            throw  new EntityNotFoundException("L'invite possede deja une invitation");
-        }
-
-        /** generation de l'invitation pour le inviter donner*/
-        InvitationDto invitations = InvitationDto.builder()
-                .idcategorie(inviters.getCategorieInvite().getId())
-                .idinvite(inviters.getId())
-                .codemariage(inviters.getProgramme().getCodeMariage())
-                .codeInvitation(generateRandomCodeInvitation())
-                .typeinvitation(inviters.getTypeInvitation().getId())
-                .build();
-
+        valideteInvite(inviters.getId());
         return repository.save(inviters).getId();
     }
 
@@ -88,5 +72,26 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
         }
         // if not exist -> return generated iban
         return iban;
+    }
+
+    @Override
+    public Integer valideteInvite(Integer id) {
+
+        InviteMariage inviters = repository.findById(id).orElseThrow(
+                ()-> new EntityNotFoundException("l'invite possede deja l'invitation")
+        );
+        /**Generation de l'invitation par client*/
+
+        InvitationDto invitations = InvitationDto.builder()
+                .idcategorie(inviters.getCategorieInvite().getId())
+                .idinvite(inviters.getId())
+                .codemariage(inviters.getProgramme().getCodeMariage())
+                .codeInvitation(generateRandomCodeInvitation())
+                .typeinvitation(inviters.getTypeInvitation().getId())
+                .build();
+
+        invitations.setValiditeInvitation(true);
+        invitationService.save(invitations);
+        return inviters.getId();
     }
 }
