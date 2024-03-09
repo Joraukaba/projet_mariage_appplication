@@ -2,11 +2,11 @@
 
 spring:
   datasource:
-    username: udna60rm69kh6k
+    username: postgres
     hikari:
-      password:p50cba989daa23b79104eb2651b1939dde57495cb2efd39c76ee1ad4558c37293
+      password: 8654
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://ceu9lmqblp8t3q.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d1knv15idkrafc
+    url: jdbc:postgresql://localhost:5432/zamakmariage
   jpa:
     hibernate:
       ddl-auto: update

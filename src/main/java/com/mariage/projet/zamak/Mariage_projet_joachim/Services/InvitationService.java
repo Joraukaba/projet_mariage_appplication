@@ -11,7 +11,7 @@ public interface InvitationService extends AbstractService<InvitationDto>{
     InvitationDto findByInviteId(Integer id);
     List<InvitationDto> finAllByInvite(Integer id);
 
-    Integer invalidateInvitation(Integer id);
+    String invalidateInvitation(String code);
 
     InvitationDto findByCodeInvitation(String code);
 }

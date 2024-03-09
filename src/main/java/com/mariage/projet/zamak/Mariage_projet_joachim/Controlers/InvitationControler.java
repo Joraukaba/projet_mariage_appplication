@@ -41,8 +41,8 @@ public class InvitationControler {
 
 
     @PatchMapping("/invalide/{code}")
-    public ResponseEntity<Integer>invilidateInvitation(@PathVariable("code") Integer id){
-        return ResponseEntity.ok(services.invalidateInvitation(id));
+    public ResponseEntity<String>invilidateInvitation(@PathVariable("code") String code){
+        return ResponseEntity.ok(services.invalidateInvitation(code));
     }
 
     @GetMapping("/control_invitation/{code}")
