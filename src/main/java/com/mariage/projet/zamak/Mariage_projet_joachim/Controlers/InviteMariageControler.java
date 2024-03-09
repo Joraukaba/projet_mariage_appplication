@@ -38,6 +38,11 @@ public class InviteMariageControler {
         return ResponseEntity.accepted().build();
     }
 
+    @PatchMapping("/validate/{id_invite}")
+    public ResponseEntity<Integer>validateInvite( @PathVariable("id_invite") Integer id){
+        return ResponseEntity.ok(services.valideteInvite(id));
+    }
+
 
 
 }

@@ -1,13 +1,12 @@
 package com.mariage.projet.zamak.Mariage_projet_joachim.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -22,9 +21,7 @@ public class CategorieInvite {
 
     private String libelle;
 
-    @OneToOne()
-    private InviteMariage inviteMariage;
+    @OneToMany(mappedBy = "categorieInvite")
+    private List<InviteMariage> inviteMariage;
 
-    @OneToOne
-    private Invitations invitations;
 }

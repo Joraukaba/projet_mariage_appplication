@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +32,6 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
     public Integer save(InviteMariageDto dto) {
         validator.validate(dto);
         InviteMariage inviters = InviteMariageDto.formDto(dto);
-        valideteInvite(inviters.getId());
         return repository.save(inviters).getId();
     }
 
@@ -74,19 +74,21 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
     }
 
     @Override
+    @Transactional
     public Integer valideteInvite(Integer id) {
 
         InviteMariage inviters = repository.findById(id).orElseThrow(
-                ()-> new EntityNotFoundException("l'invite possede deja l'invitation")
+                ()-> new EntityNotFoundException("l'inviter n'est pas dans la base des donnees")
         );
+
+
         /**Generation de l'invitation par client*/
 
         InvitationDto invitations = InvitationDto.builder()
-                .idcategorie(inviters.getCategorieInvite().getId())
+
                 .idinvite(inviters.getId())
                 .codemariage(inviters.getProgramme().getCodeMariage())
                 .codeInvitation(generateRandomCodeInvitation())
-                .typeinvitation(inviters.getTypeInvitation().getId())
                 .build();
 
         invitations.setValiditeInvitation(true);

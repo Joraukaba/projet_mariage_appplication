@@ -18,13 +18,9 @@ public class InvitationDto {
 
     private Integer id;
 
-    private Integer idcategorie;
-
     private Integer idinvite;
 
     private String codemariage;
-
-    private Integer typeinvitation;
     private String codeInvitation;
 
     private boolean validiteInvitation;
@@ -32,10 +28,8 @@ public class InvitationDto {
     public static  InvitationDto fromEntity(Invitations invitations){
         return InvitationDto.builder()
                 .id(invitations.getId())
-                .idcategorie(invitations.getCategorie().getId())
                 .idinvite(invitations.getInviteMariage().getId())
                 .codemariage(invitations.getCodemariage())
-                .typeinvitation(invitations.getTypeinvitation().getId())
                 .codeInvitation(invitations.getCodeInvitation())
                 .validiteInvitation(invitations.isValiditeInvitation())
                 .build();
@@ -44,17 +38,11 @@ public class InvitationDto {
     public static Invitations fromDto(InvitationDto dto){
         return Invitations.builder()
                 .id(dto.getId())
-                .categorie(CategorieInvite.builder()
-                        .id(dto.getIdcategorie())
-                        .build())
                 .inviteMariage(InviteMariage.builder()
                         .id(dto.getIdinvite())
                         .build())
                 .codemariage(dto.getCodemariage())
                 .codeInvitation(dto.codeInvitation)
-                .typeinvitation(TypeInvitation.builder()
-                        .id(dto.getTypeinvitation())
-                        .build())
                 .validiteInvitation(dto.isValiditeInvitation())
                 .build();
     }

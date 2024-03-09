@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,19 +19,11 @@ public class Invitations {
     @GeneratedValue
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "id_cat")
-    private CategorieInvite categorie;
-
-    @OneToOne
+    @ManyToOne()
     @JoinColumn(name = "id_invite")
     private InviteMariage inviteMariage;
 
     private String codemariage;
-
-    @OneToOne
-    @JoinColumn(name = "id_type_invitation")
-    private TypeInvitation typeinvitation;
 
     private String codeInvitation;
 

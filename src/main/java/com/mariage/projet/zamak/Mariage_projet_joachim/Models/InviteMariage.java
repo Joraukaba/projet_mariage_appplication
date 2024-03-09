@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,13 +26,16 @@ public class InviteMariage {
     @JoinColumn(name = "id_programme")
     private ProgrammaeMariage programme;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "id_cat")
     private CategorieInvite categorieInvite;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "id_type")
     private TypeInvitation typeInvitation;
+
+    @OneToMany(mappedBy = "inviteMariage")
+    private List<Invitations> invitations;
 
 
 

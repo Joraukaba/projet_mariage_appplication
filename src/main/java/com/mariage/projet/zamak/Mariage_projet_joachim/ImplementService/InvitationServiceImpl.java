@@ -50,4 +50,42 @@ public class InvitationServiceImpl implements InvitationService {
 
         repository.deleteById(id);
     }
+
+    @Override
+    public InvitationDto findByInviteId(Integer id) {
+        return repository.findByInviteMariageId(id).map(
+                InvitationDto::fromEntity
+        ).orElseThrow(
+                ()-> new EntityNotFoundException("l'invite possede deja une invitation")
+        );
+    }
+
+    @Override
+    public List<InvitationDto> finAllByInvite(Integer id) {
+        return repository.findAllByInviteMariageId(id).stream().map(
+                InvitationDto::fromEntity
+        ).collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer invalidateInvitation(Integer id) {
+        Invitations invitations = repository.findById(id).orElseThrow(
+                ()-> new EntityNotFoundException("l'invitation n'est pas trouver")
+        );
+
+        invitations.setValiditeInvitation(false);
+        return repository.save(invitations).getId();
+    }
+
+    @Override
+    public InvitationDto findByCodeInvitation(String code) {
+
+        return repository.findByCodeInvitationIgnoreCase(code).map(
+                InvitationDto::fromEntity
+        ).orElseThrow(
+                ()-> new EntityNotFoundException("Invitation deja utiliser")
+        );
+
+
+    }
 };
