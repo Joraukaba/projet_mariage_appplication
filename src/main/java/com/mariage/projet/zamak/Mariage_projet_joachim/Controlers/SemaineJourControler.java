@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/semaines")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class SemaineJourControler {
 
     private final SemaineJourService services;

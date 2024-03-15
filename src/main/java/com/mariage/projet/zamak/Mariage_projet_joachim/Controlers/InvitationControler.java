@@ -14,6 +14,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/invitations")
 @RequiredArgsConstructor
+@CrossOrigin("*")
+
 public class InvitationControler {
 
     private final InvitationService services;

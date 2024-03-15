@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/invites")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class InviteMariageControler {
 
     private final InviteMariageService services;
@@ -42,6 +43,13 @@ public class InviteMariageControler {
     public ResponseEntity<Integer>validateInvite( @PathVariable("id_invite") Integer id){
         return ResponseEntity.ok(services.valideteInvite(id));
     }
+
+    @GetMapping("/invite/search")
+    public ResponseEntity<List<InviteMariageDto>> searchInvite(@RequestParam(name = "keyword", defaultValue = "") String keyword){
+       return ResponseEntity.ok(services.searchInviteMariage("%"+keyword+"%"));
+    }
+
+
 
 
 

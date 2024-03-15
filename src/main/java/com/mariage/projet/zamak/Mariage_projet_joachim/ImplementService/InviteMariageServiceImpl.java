@@ -95,4 +95,13 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
         invitationService.save(invitations);
         return inviters.getId();
     }
+
+    @Override
+    public List<InviteMariageDto> searchInviteMariage(String keyword) {
+        return repository.searchByNomCompleteIgnoreCase(keyword).stream().map(
+                InviteMariageDto::formEntity
+        ).collect(Collectors.toList());
+    }
+
+
 }

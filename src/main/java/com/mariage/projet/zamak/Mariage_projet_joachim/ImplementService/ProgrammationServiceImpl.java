@@ -59,6 +59,20 @@ public class ProgrammationServiceImpl implements ProgrammeService  {
 
     }
 
+    /** methode pour faire la chercher des programmes par la famille*/
+    @Override
+    public List<ProgrammeDto> searchProgramme(String keyword) {
+        return repository.searchProgrammaeMariageByFamille(keyword).stream().map(
+                ProgrammeDto::fromEntity
+        ).collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer NumberInviters(Integer id) {
+        return repository.nombreTotalInvite(id);
+    }
+
+
     //methode pour generere les codes de programme mariage
     private String generateRandomCodeProgramme() {
         // generate an iban

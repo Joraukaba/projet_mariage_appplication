@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/programmes")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ProgrammeMariageControler {
 
     private final ProgrammeService services;
@@ -35,6 +36,18 @@ public class ProgrammeMariageControler {
         services.delete_code(id);
         return ResponseEntity.accepted().build();
     }
+
+    //nous permet de faire la rechercher des programmes par nom de la famille
+    @GetMapping("/programme/search")
+    public ResponseEntity<List<ProgrammeDto>>searchProgrammeMariage(@RequestParam(name = "keyword", defaultValue = "") String keyword){
+        return ResponseEntity.ok(services.searchProgramme("%"+keyword+"%"));
+    }
+
+    @GetMapping("/total/{progra}")
+    public ResponseEntity<Integer>totalInvite(@PathVariable("progra") Integer id){
+        return ResponseEntity.ok(services.NumberInviters(id));
+    }
+
 
 
 

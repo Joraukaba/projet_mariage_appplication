@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/types")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class TypeInvitationControler {
 
     private final TypeInvitationService services;

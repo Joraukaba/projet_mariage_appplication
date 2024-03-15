@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/details")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class DetailMariageControler {
 
     private final DetailMariageService services;
