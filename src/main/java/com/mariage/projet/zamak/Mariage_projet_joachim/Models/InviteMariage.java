@@ -27,6 +27,7 @@ public class InviteMariage {
     private ProgrammaeMariage programme;
 
     @ManyToOne()
+
     @JoinColumn(name = "id_cat")
     private CategorieInvite categorieInvite;
 
