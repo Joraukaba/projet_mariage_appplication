@@ -17,7 +17,6 @@ public class CategorieInviteControler {
 
     private final CategorieInviteService services;
 
-
     @PostMapping("/")
     public ResponseEntity<Integer> save(@RequestBody CategorieInviteDTO dto){
         return ResponseEntity.ok(services.save(dto));

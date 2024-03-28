@@ -49,6 +49,11 @@ public class InviteMariageControler {
        return ResponseEntity.ok(services.searchInviteMariage("%"+keyword+"%"));
     }
 
+    @GetMapping("/invitepreg/{id-prog}")
+    public ResponseEntity<List<InviteMariageDto>>findAllByid(@PathVariable("id-prog") Integer id){
+        return ResponseEntity.ok(services.findAllById(id));
+    }
+
 
 
 

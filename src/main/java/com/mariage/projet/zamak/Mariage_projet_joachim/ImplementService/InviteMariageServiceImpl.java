@@ -2,9 +2,11 @@ package com.mariage.projet.zamak.Mariage_projet_joachim.ImplementService;
 
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InvitationDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InviteMariageDto;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.CategorieInvite;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.InviteMariage;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.InvitationRepository;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.InviteRepositoris;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.ProgrammaeMariage;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.TypeInvitation;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.*;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Services.InvitationService;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Services.InviteMariageService;
 import com.mariage.projet.zamak.Mariage_projet_joachim.validators.ObjectsValidator;
@@ -25,6 +27,12 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
     private final InviteRepositoris repository;
     private final InvitationRepository invitationRepository;
 
+    private final ProgrammeRepository programmeRepository;
+
+    private final TypeInvitationRepository typeInvitationRepository;
+
+    private final CategorieRepository categorieRepository;
+
     private  final InvitationService invitationService;
     private final ObjectsValidator<InviteMariageDto>validator;
 
@@ -32,6 +40,22 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
     public Integer save(InviteMariageDto dto) {
         validator.validate(dto);
         InviteMariage inviters = InviteMariageDto.formDto(dto);
+
+        ProgrammaeMariage programmaeMariage = programmeRepository.findById(dto.getId_programme())
+                .orElseThrow(
+                        ()-> new EntityNotFoundException("le programme de reference ne pas dans la base des donnees")
+                );
+        CategorieInvite categorieInvite = categorieRepository.findById(dto.getId_categorieInvite())
+                .orElseThrow(
+                        ()-> new EntityNotFoundException("categorie referencer ne pas dans la base des donnees")
+                );
+        TypeInvitation typeInvitation = typeInvitationRepository.findById(dto.getId_typeInvitation())
+                .orElseThrow(
+                        ()-> new EntityNotFoundException("type de l'invitation non trouve dans la base")
+                );
+        inviters.setProgramme(programmaeMariage);
+        inviters.setCategorieInvite(categorieInvite);
+        inviters.setTypeInvitation(typeInvitation);
         return repository.save(inviters).getId();
     }
 
@@ -99,6 +123,20 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
     @Override
     public List<InviteMariageDto> searchInviteMariage(String keyword) {
         return repository.searchByNomCompleteIgnoreCase(keyword).stream().map(
+                InviteMariageDto::formEntity
+        ).collect(Collectors.toList());
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    @Override
+    public List<InviteMariageDto> findAllById(Integer id) {
+        if(id==null){
+            throw new EntityNotFoundException("pas des invites par rapport a se programme");
+        }
+        return repository.findAllByProgrammeId(id).stream().map(
                 InviteMariageDto::formEntity
         ).collect(Collectors.toList());
     }

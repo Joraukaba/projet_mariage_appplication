@@ -27,7 +27,7 @@ public class ProgrammeDto {
     private Integer NombreInvite;
 
 
-    private LocalDate date;
+    private LocalDate date ;
 
     public static  ProgrammeDto fromEntity(ProgrammaeMariage programme){
         return ProgrammeDto.builder()

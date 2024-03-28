@@ -12,7 +12,7 @@ public interface InviteMariageService extends AbstractService<InviteMariageDto>{
 
   List<InviteMariageDto>searchInviteMariage(String keyword);
 
-
+  List<InviteMariageDto> findAllById(Integer id);
 
 
 }

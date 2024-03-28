@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @SuperBuilder
+@CrossOrigin("*")
 public class InviteMariage {
 
     @Id
@@ -23,22 +25,15 @@ public class InviteMariage {
     private String nomComplete;
 
     @ManyToOne()
-    @JoinColumn(name = "id_programme")
     private ProgrammaeMariage programme;
 
     @ManyToOne()
-
-    @JoinColumn(name = "id_cat")
     private CategorieInvite categorieInvite;
 
     @ManyToOne()
-    @JoinColumn(name = "id_type")
     private TypeInvitation typeInvitation;
 
     @OneToMany(mappedBy = "inviteMariage")
     private List<Invitations> invitations;
-
-
-
 
 }

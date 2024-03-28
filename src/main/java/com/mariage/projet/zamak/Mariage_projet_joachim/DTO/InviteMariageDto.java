@@ -48,6 +48,7 @@ public class InviteMariageDto {
                 .categorieInvite(
                         CategorieInvite.builder()
                                 .id(dto.getId_categorieInvite())
+
                                 .build()
                 )
                 .typeInvitation(
