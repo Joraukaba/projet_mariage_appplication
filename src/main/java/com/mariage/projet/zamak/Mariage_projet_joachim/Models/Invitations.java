@@ -23,9 +23,18 @@ public class Invitations {
     @JoinColumn(name = "id_invite")
     private InviteMariage inviteMariage;
 
+    @ManyToOne
+    @JoinColumn(name = "id_type")
+    private TypeInvitation typeInvitation;
+
+    @ManyToOne
+    @JoinColumn(name="id_cat")
+    private CategorieInvite categorieInvite;
+
     private String codemariage;
-
+    private String nomCompletinv;
+    private String categorieinv;
+    private String typeinv;
     private String codeInvitation;
-
     private boolean validiteInvitation;
 }

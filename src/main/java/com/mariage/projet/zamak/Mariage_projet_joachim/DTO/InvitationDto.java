@@ -25,6 +25,16 @@ public class InvitationDto {
 
     private boolean validiteInvitation;
 
+    private Integer typeinvite;
+
+    private Integer categorieinvite;
+
+    private String nomCompletinv;
+
+    private String categorieinv;
+
+    private String typeinv;
+
     public static  InvitationDto fromEntity(Invitations invitations){
         return InvitationDto.builder()
                 .id(invitations.getId())
@@ -32,6 +42,11 @@ public class InvitationDto {
                 .codemariage(invitations.getCodemariage())
                 .codeInvitation(invitations.getCodeInvitation())
                 .validiteInvitation(invitations.isValiditeInvitation())
+                .typeinvite(invitations.getTypeInvitation().getId())
+                .categorieinvite(invitations.getCategorieInvite().getId())
+                .typeinv(invitations.getTypeInvitation().getDescription())
+                .categorieinv(invitations.getCategorieInvite().getLibelle())
+                .nomCompletinv(invitations.getNomCompletinv())
                 .build();
     }
 
@@ -41,8 +56,21 @@ public class InvitationDto {
                 .inviteMariage(InviteMariage.builder()
                         .id(dto.getIdinvite())
                         .build())
+                .typeInvitation(
+                        TypeInvitation.builder()
+                                .id(dto.getTypeinvite())
+                                .build()
+                )
+                .categorieInvite(
+                        CategorieInvite.builder()
+                                .id(dto.getCategorieinvite())
+                                .build()
+                )
+                .nomCompletinv(dto.getNomCompletinv())
+                .typeinv(dto.getTypeinv())
+                .categorieinv(dto.getCategorieinv())
                 .codemariage(dto.getCodemariage())
-                .codeInvitation(dto.codeInvitation)
+                .codeInvitation(dto.getCodeInvitation())
                 .validiteInvitation(dto.isValiditeInvitation())
                 .build();
     }

@@ -2,10 +2,7 @@ package com.mariage.projet.zamak.Mariage_projet_joachim.ImplementService;
 
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InvitationDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InviteMariageDto;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.CategorieInvite;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.InviteMariage;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.ProgrammaeMariage;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.TypeInvitation;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.*;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.*;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Services.InvitationService;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Services.InviteMariageService;
@@ -105,19 +102,27 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
                 ()-> new EntityNotFoundException("l'inviter n'est pas dans la base des donnees")
         );
 
+        boolean asAlreadyInvitation  = invitationRepository.findByInviteMariageId(inviters.getId()).isPresent();
+        if (asAlreadyInvitation){
+            throw new EntityNotFoundException("deja une invitations");
+        }
 
-        /**Generation de l'invitation par client*/
+//        /**Generation de l'invitation par client*/
+            InvitationDto invitations = InvitationDto.builder()
 
-        InvitationDto invitations = InvitationDto.builder()
+                    .idinvite(inviters.getId())
+                    .codemariage(inviters.getProgramme().getCodeMariage())
+                    .codeInvitation(generateRandomCodeInvitation())
+                    .typeinvite(inviters.getTypeInvitation().getId())
+                    .typeinv(inviters.getTypeInvitation().getDescription())
+                    .categorieinvite(inviters.getCategorieInvite().getId())
+                    .categorieinv(inviters.getCategorieInvite().getLibelle())
+                    .nomCompletinv(inviters.getNomComplete())
+                    .build();
+            invitations.setValiditeInvitation(true);
+            invitationService.save(invitations);
+             return inviters.getId();
 
-                .idinvite(inviters.getId())
-                .codemariage(inviters.getProgramme().getCodeMariage())
-                .codeInvitation(generateRandomCodeInvitation())
-                .build();
-
-        invitations.setValiditeInvitation(true);
-        invitationService.save(invitations);
-        return inviters.getId();
     }
 
     @Override

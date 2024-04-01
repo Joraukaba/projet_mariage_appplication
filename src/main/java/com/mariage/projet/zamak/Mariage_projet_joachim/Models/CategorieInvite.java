@@ -16,7 +16,6 @@ import java.util.List;
 @Builder
 @CrossOrigin("*")
 public class CategorieInvite {
-
     @Id
     @GeneratedValue
     private Integer id;
@@ -25,5 +24,8 @@ public class CategorieInvite {
 
     @OneToMany(mappedBy = "categorieInvite")
     private List<InviteMariage> inviteMariage;
+
+    @OneToMany(mappedBy = "categorieInvite")
+    private List<Invitations>invitations;
 
 }

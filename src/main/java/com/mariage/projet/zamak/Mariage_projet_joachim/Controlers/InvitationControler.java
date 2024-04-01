@@ -47,7 +47,7 @@ public class InvitationControler {
         return ResponseEntity.ok(services.invalidateInvitation(code));
     }
 
-    @GetMapping("/control_invitation/{code}")
+    @PatchMapping("/control_invitation/{code}")
     public ResponseEntity<InvitationDto>findByCodeInvation(@PathVariable("code") String code){
         return ResponseEntity.ok(services.findByCodeInvitation(code));
     }

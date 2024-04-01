@@ -23,4 +23,7 @@ public class TypeInvitation {
 
     @OneToMany(mappedBy = "typeInvitation")
     private List<InviteMariage> inviteMariage;
+
+    @OneToMany(mappedBy = "typeInvitation")
+    private List<Invitations> invitations;
 }

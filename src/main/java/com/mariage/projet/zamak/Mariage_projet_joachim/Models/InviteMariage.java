@@ -36,4 +36,7 @@ public class InviteMariage {
     @OneToMany(mappedBy = "inviteMariage")
     private List<Invitations> invitations;
 
+    @OneToOne
+    private PresenceInvite presenceInvite;
+
 }

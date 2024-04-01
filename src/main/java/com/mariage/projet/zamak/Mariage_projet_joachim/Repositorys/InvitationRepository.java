@@ -1,6 +1,4 @@
 package com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys;
-
-import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InvitationDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.Invitations;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
