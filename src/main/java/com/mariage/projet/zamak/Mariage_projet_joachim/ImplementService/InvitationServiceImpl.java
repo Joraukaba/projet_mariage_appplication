@@ -4,22 +4,28 @@ import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InvitationDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.PresentInviteDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.Invitations;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.PresenceInvite;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.ProgrammaeMariage;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.InvitationRepository;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.PresenceInviteRepositiry;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.ProgrammeRepository;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Services.InvitationService;
 import com.mariage.projet.zamak.Mariage_projet_joachim.validators.ObjectsValidator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class InvitationServiceImpl implements InvitationService {
     private final InvitationRepository repository;
+
+    private final ProgrammeRepository programmeRepository;
 
     private final PresenceInviteRepositiry presenceInviteRepositiry;
 
@@ -78,11 +84,13 @@ public class InvitationServiceImpl implements InvitationService {
         Invitations invitations = repository.findByCodeInvitation(code).orElseThrow(
                 ()-> new EntityNotFoundException("l'invitation n'est pas trouver")
         );
+
         invitations.setValiditeInvitation(false);
         return repository.save(invitations).getCodeInvitation();
     }
 
     @Override
+    @Transactional
     public InvitationDto findByCodeInvitation(String code) {
 
         InvitationDto invitation_deja_utiliser = repository.findByCodeInvitationVerifier(code).map(
@@ -98,6 +106,7 @@ public class InvitationServiceImpl implements InvitationService {
                 .statut(true)
                 .date(LocalDateTime.now())
                 .inviteMariage(invitation_deja_utiliser.getIdinvite())
+                .id_programmaeMariage(invitation_deja_utiliser.getId())
                 .build();
 
         PresenceInvite presenceInvite = PresentInviteDto.formEntity(presentInviteDto);
@@ -108,4 +117,7 @@ public class InvitationServiceImpl implements InvitationService {
         repository.save(invitations);
         return invitation_deja_utiliser;
     }
+
+    //la methode qui va nous permettre de generer le code secre d'urgence
+
 };

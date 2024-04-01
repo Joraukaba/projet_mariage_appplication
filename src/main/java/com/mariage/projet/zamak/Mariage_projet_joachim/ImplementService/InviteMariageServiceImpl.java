@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -118,6 +119,8 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
                     .categorieinvite(inviters.getCategorieInvite().getId())
                     .categorieinv(inviters.getCategorieInvite().getLibelle())
                     .nomCompletinv(inviters.getNomComplete())
+                    .programmaeMariage(inviters.getProgramme().getId())
+                    .codesecret(generateRandomNumber())
                     .build();
             invitations.setValiditeInvitation(true);
             invitationService.save(invitations);
@@ -144,6 +147,11 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
         return repository.findAllByProgrammeId(id).stream().map(
                 InviteMariageDto::formEntity
         ).collect(Collectors.toList());
+    }
+
+    public static int generateRandomNumber() {
+        Random rand = new Random();
+        return rand.nextInt(10001); // Génère un nombre aléatoire entre 0 et 10000
     }
 
 

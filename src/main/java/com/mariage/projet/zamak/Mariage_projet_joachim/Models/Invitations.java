@@ -37,4 +37,9 @@ public class Invitations {
     private String typeinv;
     private String codeInvitation;
     private boolean validiteInvitation;
+    private Integer codesecret;
+
+    @ManyToOne
+    @JoinColumn(name = "id_program")
+    private ProgrammaeMariage programmaeMariage;
 }

@@ -39,5 +39,8 @@ public class ProgrammaeMariage {
     @OneToMany(mappedBy = "programme")
     List<InviteMariage>inviteMariages;
 
+    @OneToMany(mappedBy = "programmaeMariage")
+    private List<Invitations> invitations;
+
 
 }

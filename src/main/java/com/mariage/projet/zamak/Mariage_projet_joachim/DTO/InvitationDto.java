@@ -1,9 +1,6 @@
 package com.mariage.projet.zamak.Mariage_projet_joachim.DTO;
 
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.CategorieInvite;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.Invitations;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.InviteMariage;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.TypeInvitation;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +32,10 @@ public class InvitationDto {
 
     private String typeinv;
 
+    private Integer programmaeMariage;
+
+    private Integer codesecret;
+
     public static  InvitationDto fromEntity(Invitations invitations){
         return InvitationDto.builder()
                 .id(invitations.getId())
@@ -47,6 +48,9 @@ public class InvitationDto {
                 .typeinv(invitations.getTypeInvitation().getDescription())
                 .categorieinv(invitations.getCategorieInvite().getLibelle())
                 .nomCompletinv(invitations.getNomCompletinv())
+                .programmaeMariage(invitations.getProgrammaeMariage().getId())
+                .codesecret(invitations.getCodesecret())
+
                 .build();
     }
 
@@ -72,6 +76,12 @@ public class InvitationDto {
                 .codemariage(dto.getCodemariage())
                 .codeInvitation(dto.getCodeInvitation())
                 .validiteInvitation(dto.isValiditeInvitation())
+                .programmaeMariage(
+                        ProgrammaeMariage.builder()
+                                .id(dto.getProgrammaeMariage())
+                                .build()
+                )
+                .codesecret(dto.getCodesecret())
                 .build();
     }
 }

@@ -28,6 +28,10 @@ public class PresenceInvite {
     @JoinColumn(name = "id_invite")
     private InviteMariage inviteMariage;
 
+    @ManyToOne
+    @JoinColumn(name = "id_programm")
+    private ProgrammaeMariage programmaeMariage;
+
 
 
 }
