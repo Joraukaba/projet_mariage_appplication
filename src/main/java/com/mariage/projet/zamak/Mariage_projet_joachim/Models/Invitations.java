@@ -19,7 +19,7 @@ public class Invitations {
     @GeneratedValue
     private Integer id;
 
-    @ManyToOne()
+    @OneToOne
     @JoinColumn(name = "id_invite")
     private InviteMariage inviteMariage;
 

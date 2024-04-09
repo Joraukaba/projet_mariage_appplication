@@ -21,4 +21,6 @@ public interface InviteRepositoris extends JpaRepository<InviteMariage, Integer>
 
 
 
+
+
 }

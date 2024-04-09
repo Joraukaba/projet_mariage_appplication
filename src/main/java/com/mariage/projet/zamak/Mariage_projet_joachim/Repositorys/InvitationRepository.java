@@ -10,9 +10,14 @@ import java.util.Optional;
 public interface InvitationRepository extends JpaRepository<Invitations, Integer> {
     Optional<Invitations> findByCodeInvitation(String iban);
 
-    Optional<Invitations> findByInviteMariageId(Integer id);
+    @Query("from Invitations i where i.inviteMariage.id=:id AND i.validiteInvitation=true")
+    Optional<Boolean> findByInviteMariageIdvalide(@Param("id") Integer id);
+
+    Optional<Invitations>findByInviteMariageId(Integer id);
 
     List<Invitations> findAllByInviteMariageId(Integer id);
+
+
 
     @Query("from Invitations i where i.codeInvitation = :code and i.validiteInvitation=true")
     Optional<Invitations>findByCodeInvitationVerifier(@Param("code") String code);

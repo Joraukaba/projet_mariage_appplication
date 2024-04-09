@@ -81,20 +81,6 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
     }
 
 
-    private String generateRandomCodeInvitation() {
-        // generate an iban
-        String iban = Iban.random(CountryCode.DE).toFormattedString();
-
-        // check if the iban already exists
-        boolean codeMariageExists = invitationRepository.findByCodeInvitation(iban).isPresent();
-        // if exists -> generate new random iban
-        if (codeMariageExists) {
-            generateRandomCodeInvitation();
-        }
-        // if not exist -> return generated iban
-        return iban;
-    }
-
     @Override
     @Transactional
     public Integer valideteInvite(Integer id) {
@@ -102,29 +88,30 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
         InviteMariage inviters = repository.findById(id).orElseThrow(
                 ()-> new EntityNotFoundException("l'inviter n'est pas dans la base des donnees")
         );
+//        boolean AlreadyInvitationValide = invitationRepository.findByInviteMariageIdvalide(inviters.getId()).isPresent();
+//
+//        if (AlreadyInvitationValide && inviters.getInvitations().isValiditeInvitation()){
+//            throw  new EntityNotFoundException("Cette invite a deja une invitation valide");
+//        }
 
-        boolean asAlreadyInvitation  = invitationRepository.findByInviteMariageId(inviters.getId()).isPresent();
-        if (asAlreadyInvitation){
-            throw new EntityNotFoundException("deja une invitations");
-        }
+        /**Generation de l'invitation par client*/
+        InvitationDto invitations = InvitationDto.builder()
 
-//        /**Generation de l'invitation par client*/
-            InvitationDto invitations = InvitationDto.builder()
+                .idinvite(inviters.getId())
+                .codemariage(inviters.getProgramme().getCodeMariage())
+                .typeinvite(inviters.getTypeInvitation().getId())
+                .typeinv(inviters.getTypeInvitation().getDescription())
+                .categorieinvite(inviters.getCategorieInvite().getId())
+                .categorieinv(inviters.getCategorieInvite().getLibelle())
+                .nomCompletinv(inviters.getNomComplete())
+                .programmaeMariage(inviters.getProgramme().getId())
+                .build();
 
-                    .idinvite(inviters.getId())
-                    .codemariage(inviters.getProgramme().getCodeMariage())
-                    .codeInvitation(generateRandomCodeInvitation())
-                    .typeinvite(inviters.getTypeInvitation().getId())
-                    .typeinv(inviters.getTypeInvitation().getDescription())
-                    .categorieinvite(inviters.getCategorieInvite().getId())
-                    .categorieinv(inviters.getCategorieInvite().getLibelle())
-                    .nomCompletinv(inviters.getNomComplete())
-                    .programmaeMariage(inviters.getProgramme().getId())
-                    .codesecret(generateRandomNumber())
-                    .build();
-            invitations.setValiditeInvitation(true);
-            invitationService.save(invitations);
-             return inviters.getId();
+        invitations.setValiditeInvitation(true);
+        invitationService.save(invitations);
+        repository.save(inviters);
+
+        return inviters.getId();
 
     }
 
@@ -149,10 +136,7 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
         ).collect(Collectors.toList());
     }
 
-    public static int generateRandomNumber() {
-        Random rand = new Random();
-        return rand.nextInt(10001); // Génère un nombre aléatoire entre 0 et 10000
-    }
+
 
 
 }

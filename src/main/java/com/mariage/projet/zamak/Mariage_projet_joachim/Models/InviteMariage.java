@@ -33,8 +33,8 @@ public class InviteMariage {
     @ManyToOne()
     private TypeInvitation typeInvitation;
 
-    @OneToMany(mappedBy = "inviteMariage")
-    private List<Invitations> invitations;
+    @OneToOne
+    private Invitations invitations;
 
     @OneToOne
     private PresenceInvite presenceInvite;
