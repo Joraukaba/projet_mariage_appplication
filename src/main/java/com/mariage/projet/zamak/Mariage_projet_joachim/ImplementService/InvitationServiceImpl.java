@@ -132,7 +132,7 @@ public class InvitationServiceImpl implements InvitationService {
         return invitation_deja_utiliser;
     }
 
-    //la methode qui va nous permettre de generer le code secre d'urgence
+    //la methode qui va nous permettre de generer le code secre d'urgence pour les sms
     public static int generateRandomNumber() {
         Random rand = new Random();
         return rand.nextInt(10001); // Génère un nombre aléatoire entre 0 et 10000

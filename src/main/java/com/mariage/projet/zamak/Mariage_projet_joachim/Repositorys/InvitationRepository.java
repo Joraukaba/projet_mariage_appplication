@@ -13,7 +13,8 @@ public interface InvitationRepository extends JpaRepository<Invitations, Integer
     @Query("from Invitations i where i.inviteMariage.id=:id AND i.validiteInvitation=true")
     Optional<Boolean> findByInviteMariageIdvalide(@Param("id") Integer id);
 
-    Optional<Invitations>findByInviteMariageId(Integer id);
+    @Query("from Invitations i where i.inviteMariage.id=:id")
+    Optional<Invitations>findByInviteMariageId( @Param("id") Integer id);
 
     List<Invitations> findAllByInviteMariageId(Integer id);
 
@@ -21,6 +22,7 @@ public interface InvitationRepository extends JpaRepository<Invitations, Integer
 
     @Query("from Invitations i where i.codeInvitation = :code and i.validiteInvitation=true")
     Optional<Invitations>findByCodeInvitationVerifier(@Param("code") String code);
+
 
 
 }
