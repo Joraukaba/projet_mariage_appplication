@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/presence")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class PresenceInviteControler {
     private final PresenceInviteService services;
 

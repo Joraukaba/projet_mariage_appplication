@@ -14,20 +14,20 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class MouvementInviteDTO {
     private  Integer id;
-    private String coderfiddto;
+    private String coderfid;
 
     public static MouvementInviteDTO formDto(MouvementInvite mouvementInvite){
         return MouvementInviteDTO.builder()
                 .id(mouvementInvite.getId())
-                .coderfiddto(mouvementInvite.getCoderfid())
+                .coderfid(mouvementInvite.getCoderfid())
                 .build();
 
     }
 
     public static  MouvementInvite formEntity(MouvementInviteDTO dto){
         return MouvementInvite.builder()
-                .id(dto.id)
-                .coderfid(dto.coderfiddto)
+                .id(dto.getId())
+                .coderfid(dto.getCoderfid())
                 .build();
 
     }}
