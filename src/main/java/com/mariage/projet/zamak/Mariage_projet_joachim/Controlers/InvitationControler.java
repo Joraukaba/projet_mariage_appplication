@@ -57,6 +57,13 @@ public class InvitationControler {
         return ResponseEntity.ok(services.findByCodeInvitation(code));
     }
 
+
+
+    @PatchMapping("/control_code/{code}")
+    public ResponseEntity<InvitationDto>findByCodeSecret(@PathVariable("code") Integer code){
+        return  ResponseEntity.ok(services.findByCodeSecret(code));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>delete( @PathVariable("id") Integer id){
         services.delete(id);

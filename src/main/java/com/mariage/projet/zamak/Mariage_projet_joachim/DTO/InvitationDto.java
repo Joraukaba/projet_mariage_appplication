@@ -24,6 +24,8 @@ public class InvitationDto {
 
     private Integer typeinvite;
 
+    private String cartemagnetique;
+
     private Integer categorieinvite;
 
     private String nomCompletinv;
@@ -44,6 +46,7 @@ public class InvitationDto {
                 .codeInvitation(invitations.getCodeInvitation())
                 .validiteInvitation(invitations.isValiditeInvitation())
                 .typeinvite(invitations.getTypeInvitation().getId())
+                .cartemagnetique(invitations.getCartemagnetique())
                 .categorieinvite(invitations.getCategorieInvite().getId())
                 .typeinv(invitations.getTypeInvitation().getDescription())
                 .categorieinv(invitations.getCategorieInvite().getLibelle())
@@ -72,6 +75,7 @@ public class InvitationDto {
                 )
                 .nomCompletinv(dto.getNomCompletinv())
                 .typeinv(dto.getTypeinv())
+                .cartemagnetique(dto.getCartemagnetique())
                 .categorieinv(dto.getCategorieinv())
                 .codemariage(dto.getCodemariage())
                 .codeInvitation(dto.getCodeInvitation())

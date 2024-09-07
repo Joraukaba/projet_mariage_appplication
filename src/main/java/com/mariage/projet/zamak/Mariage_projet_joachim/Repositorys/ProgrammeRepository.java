@@ -16,6 +16,7 @@ public interface ProgrammeRepository extends JpaRepository<ProgrammaeMariage, In
     @Query("from ProgrammaeMariage p where p.famille like :kw")
     List<ProgrammaeMariage>searchProgrammaeMariageByFamille(@Param("kw") String kyword);
 
+
     @Query("select count(i.nomComplete) from  InviteMariage  i inner join ProgrammaeMariage p on i.programme.id=p.id where p.id=:idp")
     Integer nombreTotalInvite(@Param("idp") Integer id);
 

@@ -2,9 +2,7 @@ package com.mariage.projet.zamak.Mariage_projet_joachim.ImplementService;
 
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InvitationDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.PresentInviteDto;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Exceptions.OperationNonPermittedException;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.Invitations;
-import com.mariage.projet.zamak.Mariage_projet_joachim.Models.InviteMariage;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.PresenceInvite;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.InvitationRepository;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.InviteRepositoris;
@@ -104,6 +102,10 @@ public class InvitationServiceImpl implements InvitationService {
         return repository.save(invitations).getCodeInvitation();
     }
 
+    /**
+     * ici nous allons faire une rechercher d'une invitation par son code
+     * */
+
     @Override
     public InvitationDto findByCodeInvitation(String code) {
 
@@ -111,7 +113,7 @@ public class InvitationServiceImpl implements InvitationService {
                 InvitationDto::fromEntity
 
         ).orElseThrow(
-                () -> new EntityNotFoundException("Invitation deja utiliser")
+                () -> new EntityNotFoundException("Invitation deja utilisée ou n'existepas dans base des donnée")
         );
         invitation_deja_utiliser.setValiditeInvitation(false);
 
@@ -120,7 +122,7 @@ public class InvitationServiceImpl implements InvitationService {
                 .statut(true)
                 .date(LocalDateTime.now())
                 .inviteMariage(invitation_deja_utiliser.getIdinvite())
-                .id_programmaeMariage(invitation_deja_utiliser.getId())
+                .id_programmaeMariage(invitation_deja_utiliser.getProgrammaeMariage())
                 .build();
 
         PresenceInvite presenceInvite = PresentInviteDto.formEntity(presentInviteDto);
@@ -131,6 +133,42 @@ public class InvitationServiceImpl implements InvitationService {
         repository.save(invitations);
         return invitation_deja_utiliser;
     }
+
+    /**
+     * @param code_secret
+     * @return une invitation avec son soce secret de l'invitation
+     */
+    @Override
+    public InvitationDto findByCodeSecret(Integer code_secret) {
+        //chercher l'invitation exist dans la base des donnees
+        InvitationDto invitationbycode = repository.findByCodeSecretVerifier(code_secret).map(
+                InvitationDto::fromEntity
+        ).orElseThrow(
+                ()-> new EntityNotFoundException("cette invitation avec code "+code_secret+" ne pas dans la base des données ou deja utiliser")
+        );
+        //changer l'etat de l'invitation en false
+        invitationbycode.setValiditeInvitation(false);
+
+        //generer une present pour l'inviter
+        PresentInviteDto presentInviteDto = PresentInviteDto.builder()
+                .statut(true)
+                .date(LocalDateTime.now())
+                .inviteMariage(invitationbycode.getIdinvite())
+                .id_programmaeMariage(invitationbycode.getProgrammaeMariage())
+                .build();
+
+        PresenceInvite presenceInvite = PresentInviteDto.formEntity(presentInviteDto);
+        presenceInviteRepositiry.save(presenceInvite);
+
+        Invitations invitations = InvitationDto.fromDto(invitationbycode);
+        repository.save(invitations);
+        return invitationbycode;
+    }
+
+    /**
+     * @param id_carte
+     * @return une invitation avec son id de la carte magnetique
+     */
 
     //la methode qui va nous permettre de generer le code secre d'urgence pour les sms
     public static int generateRandomNumber() {
@@ -150,6 +188,12 @@ public class InvitationServiceImpl implements InvitationService {
         }
         // if not exist -> return generated iban
         return iban;
+    }
+    
+    private String generateIdCarte(){
+        String[] ElementCarteId = {"DB 9W 873 92", "54K 34 23 10"};
+
+        return  null;
     }
 
 };

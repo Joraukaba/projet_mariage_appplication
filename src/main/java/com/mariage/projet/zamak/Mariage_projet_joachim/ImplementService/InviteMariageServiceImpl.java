@@ -88,11 +88,11 @@ public class InviteMariageServiceImpl  implements InviteMariageService{
         InviteMariage inviters = repository.findById(id).orElseThrow(
                 ()-> new EntityNotFoundException("l'inviter n'est pas dans la base des donnees")
         );
-//        boolean AlreadyInvitationValide = invitationRepository.findByInviteMariageIdvalide(inviters.getId()).isPresent();
-//
-//        if (AlreadyInvitationValide && inviters.getInvitations().isValiditeInvitation()){
-//            throw  new EntityNotFoundException("Cette invite a deja une invitation valide");
-//        }
+        boolean AlreadyInvitationValide = invitationRepository.findByInviteMariageIdvalide(inviters.getId()).isPresent();
+
+        if (AlreadyInvitationValide && inviters.getInvitations().isValiditeInvitation()){
+            throw  new EntityNotFoundException("Cette invite a deja une invitation valide");
+        }
 
         /**Generation de l'invitation par client*/
         InvitationDto invitations = InvitationDto.builder()

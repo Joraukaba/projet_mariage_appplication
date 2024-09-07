@@ -34,6 +34,7 @@ public class Invitations {
     private String codemariage;
     private String nomCompletinv;
     private String categorieinv;
+    private String cartemagnetique;
     private String typeinv;
     private String codeInvitation;
     private boolean validiteInvitation;
