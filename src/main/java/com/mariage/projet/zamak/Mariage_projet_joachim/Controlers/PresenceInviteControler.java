@@ -2,6 +2,7 @@ package com.mariage.projet.zamak.Mariage_projet_joachim.Controlers;
 
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.CategorieInviteDTO;
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.PresentInviteDto;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.PresenceInvite;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Services.PresenceInviteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/presence")
+@RequestMapping("/presences")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PresenceInviteControler {
     private final PresenceInviteService services;
 
@@ -29,6 +30,11 @@ public class PresenceInviteControler {
     @GetMapping("/{id}")
     public ResponseEntity<PresentInviteDto>findById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(services.findById(id));
+    }
+
+    @GetMapping("/rapport/")
+    public ResponseEntity<List<PresentInviteDto>> findAllWithInviteAndProgramme(){
+        return  ResponseEntity.ok(services.findAllWithInviteAndProgramme());
     }
 
     @DeleteMapping("/{id}")

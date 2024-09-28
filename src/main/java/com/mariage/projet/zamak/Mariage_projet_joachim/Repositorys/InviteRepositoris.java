@@ -18,7 +18,7 @@ public interface InviteRepositoris extends JpaRepository<InviteMariage, Integer>
     List<InviteMariage>searchByNomCompleteIgnoreCase(@Param("kw") String keyword);
 
     List<InviteMariage>findAllByProgrammeId(Integer id);
-
+    Optional<InviteMariage> findByNomComplete(String nomComplete);
 
 
 

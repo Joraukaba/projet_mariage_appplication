@@ -3,7 +3,9 @@ package com.mariage.projet.zamak.Mariage_projet_joachim.ImplementService;
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InvitationDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.PresentInviteDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.Invitations;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.InviteMariage;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.PresenceInvite;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.ProgrammaeMariage;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.InvitationRepository;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.InviteRepositoris;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys.PresenceInviteRepositiry;
@@ -76,14 +78,6 @@ public class InvitationServiceImpl implements InvitationService {
         repository.deleteById(id);
     }
 
-    @Override
-    public InvitationDto findByInviteId(Integer id) {
-        return repository.findByInviteMariageId(id).map(
-                InvitationDto::fromEntity
-        ).orElseThrow(
-                ()-> new EntityNotFoundException("l'invite possede deja une invitation")
-        );
-    }
 
     @Override
     public List<InvitationDto> finAllByInvite(Integer id) {
@@ -105,34 +99,48 @@ public class InvitationServiceImpl implements InvitationService {
     /**
      * ici nous allons faire une rechercher d'une invitation par son code
      * */
-
     @Override
     public InvitationDto findByCodeInvitation(String code) {
 
-        InvitationDto invitation_deja_utiliser = repository.findByCodeInvitationVerifier(code).map(
-                InvitationDto::fromEntity
+        // Vérifier si le code de l'invitation existe dans la table Invitations
+        InvitationDto invitationDejaUtilisee = repository.findByCodeInvitationVerifier(code)
+                .map(InvitationDto::fromEntity)
+                .orElseThrow(() -> new EntityNotFoundException("Invitation déjà utilisée ou n'existe pas dans la base des données"));
 
-        ).orElseThrow(
-                () -> new EntityNotFoundException("Invitation deja utilisée ou n'existepas dans base des donnée")
-        );
-        invitation_deja_utiliser.setValiditeInvitation(false);
+        // Marquer l'invitation comme non valide
+        invitationDejaUtilisee.setValiditeInvitation(false);
 
-        //la presence des invites
+        // Récupérer l'invité mariage à partir de l'invitation
+        InviteMariage inviteMariage = inviteRepositorisl.findById(invitationDejaUtilisee.getIdinvite())
+                .orElseThrow(() -> new EntityNotFoundException("Invité non trouvé"));
+
+        // Récupérer le programme mariage à partir de l'invitation
+        ProgrammaeMariage programmaeMariage = programmeRepository.findById(invitationDejaUtilisee.getProgrammaeMariage())
+                .orElseThrow(() -> new EntityNotFoundException("Programme Mariage non trouvé"));
+
+        // Créer l'objet PresenceInvite
         PresentInviteDto presentInviteDto = PresentInviteDto.builder()
                 .statut(true)
                 .date(LocalDateTime.now())
-                .inviteMariage(invitation_deja_utiliser.getIdinvite())
-                .id_programmaeMariage(invitation_deja_utiliser.getProgrammaeMariage())
+                .inviteMariage(inviteMariage.getNomComplete())  // Utiliser l'invité existant
+                .id_programmaeMariage(programmaeMariage.getId())  // Utiliser le programme existant
                 .build();
 
-        PresenceInvite presenceInvite = PresentInviteDto.formEntity(presentInviteDto);
-        presenceInviteRepositiry.save(presenceInvite);
-        //fin presence
+        // Convertir le DTO en entité PresenceInvite avec les entités récupérées
+        PresenceInvite presenceInvite = PresentInviteDto.formEntity(presentInviteDto, inviteMariage, programmaeMariage);
 
-        Invitations invitations = InvitationDto.fromDto(invitation_deja_utiliser);
+        // Enregistrer la présence de l'invité
+        presenceInviteRepositiry.save(presenceInvite);
+
+        // Mettre à jour et sauvegarder l'invitation
+        Invitations invitations = InvitationDto.fromDto(invitationDejaUtilisee);
         repository.save(invitations);
-        return invitation_deja_utiliser;
+
+        return invitationDejaUtilisee;
     }
+
+
+
 
     /**
      * @param code_secret
@@ -140,33 +148,35 @@ public class InvitationServiceImpl implements InvitationService {
      */
     @Override
     public InvitationDto findByCodeSecret(Integer code_secret) {
-        //chercher l'invitation exist dans la base des donnees
-        InvitationDto invitationbycode = repository.findByCodeSecretVerifier(code_secret).map(
-                InvitationDto::fromEntity
-        ).orElseThrow(
-                ()-> new EntityNotFoundException("cette invitation avec code "+code_secret+" ne pas dans la base des données ou deja utiliser")
-        );
-        //changer l'etat de l'invitation en false
-        invitationbycode.setValiditeInvitation(false);
-
-        //generer une present pour l'inviter
-        PresentInviteDto presentInviteDto = PresentInviteDto.builder()
-                .statut(true)
-                .date(LocalDateTime.now())
-                .inviteMariage(invitationbycode.getIdinvite())
-                .id_programmaeMariage(invitationbycode.getProgrammaeMariage())
-                .build();
-
-        PresenceInvite presenceInvite = PresentInviteDto.formEntity(presentInviteDto);
-        presenceInviteRepositiry.save(presenceInvite);
-
-        Invitations invitations = InvitationDto.fromDto(invitationbycode);
-        repository.save(invitations);
-        return invitationbycode;
+//        //chercher l'invitation exist dans la base des donnees
+//        InvitationDto invitationbycode = repository.findByCodeSecretVerifier(code_secret).map(
+//                InvitationDto::fromEntity
+//        ).orElseThrow(
+//                ()-> new EntityNotFoundException("cette invitation avec code "+code_secret+" ne pas dans la base des données ou deja utiliser")
+//        );
+//        //changer l'etat de l'invitation en false
+//        invitationbycode.setValiditeInvitation(false);
+//
+//        //generer une present pour l'inviter
+//        PresentInviteDto presentInviteDto = PresentInviteDto.builder()
+//                .statut(true)
+//                .date(LocalDateTime.now())
+//                .inviteMariage(invitationbycode.getNomCompletinv())
+//                .id_programmaeMariage(invitationbycode.getProgrammaeMariage())
+//                .build();
+//
+//        PresenceInvite presenceInvite = PresentInviteDto.formEntity(presentInviteDto);
+//
+//        presenceInviteRepositiry.save(presenceInvite);
+//
+//        Invitations invitations = InvitationDto.fromDto(invitationbycode);
+//        repository.save(invitations);
+//        return invitationbycode;
+        return  null;
     }
 
     /**
-     * @param id_carte
+     * @param
      * @return une invitation avec son id de la carte magnetique
      */
 

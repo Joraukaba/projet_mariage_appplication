@@ -21,7 +21,9 @@ public class PresentInviteDto {
 
     private LocalDateTime date;
 
-    private Integer inviteMariage;
+    private String inviteMariage;
+
+    private String inviteFamille;  // Ajouté
 
     private Integer id_programmaeMariage;
 
@@ -30,28 +32,23 @@ public class PresentInviteDto {
                 .id(presenceInvite.getId())
                 .statut(presenceInvite.getStatut())
                 .date(presenceInvite.getDate())
-                .inviteMariage(presenceInvite.getInviteMariage().getId())
+                .inviteMariage(presenceInvite.getInviteMariage().getNomComplete())
+                .inviteFamille(presenceInvite.getProgrammaeMariage().getFamille())
                 .id_programmaeMariage(presenceInvite.getProgrammaeMariage().getId())
 
                 .build();
     }
 
-    public static PresenceInvite formEntity(PresentInviteDto dto){
+    public static PresenceInvite formEntity(PresentInviteDto dto, InviteMariage inviteMariage, ProgrammaeMariage programmaeMariage) {
         return PresenceInvite.builder()
                 .id(dto.getId())
                 .statut(dto.getStatut())
                 .date(dto.getDate())
-                .inviteMariage(
-                   InviteMariage.builder()
-                           .id(dto.getInviteMariage())
-                           .build()
-                )
-                .programmaeMariage(
-                        ProgrammaeMariage.builder()
-                                .id(dto.getId_programmaeMariage())
-                                .build()
-                )
-
+                .inviteMariage(inviteMariage)  // Utiliser l'invité existant
+                .programmaeMariage(programmaeMariage)  // Utiliser le programme existant
                 .build();
     }
+
+
+
 }

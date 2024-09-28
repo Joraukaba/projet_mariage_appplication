@@ -36,10 +36,6 @@ public class InvitationControler {
         return ResponseEntity.ok(services.findById(id));
     }
 
-    @GetMapping("/invite/{id}")
-    public ResponseEntity<InvitationDto>findByInviteMariageId(@PathVariable("id") Integer id){
-        return ResponseEntity.ok(services.findByInviteId(id));
-    }
 
     @GetMapping("/info_invite/{id}")
     public ResponseEntity<List<InvitationDto>>findAllByInviteId(@PathVariable("id") Integer id){

@@ -1,6 +1,8 @@
 package com.mariage.projet.zamak.Mariage_projet_joachim.Repositorys;
 import com.mariage.projet.zamak.Mariage_projet_joachim.DTO.InvitationDto;
 import com.mariage.projet.zamak.Mariage_projet_joachim.Models.Invitations;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.InviteMariage;
+import com.mariage.projet.zamak.Mariage_projet_joachim.Models.ProgrammaeMariage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,8 +16,12 @@ public interface InvitationRepository extends JpaRepository<Invitations, Integer
     @Query("from Invitations i where i.inviteMariage.id=:id AND i.validiteInvitation=true")
     Optional<Boolean> findByInviteMariageIdvalide(@Param("id") Integer id);
 
-    @Query("from Invitations i where i.inviteMariage.id=:id")
-    Optional<Invitations>findByInviteMariageId( @Param("id") Integer id);
+    @Query("from InviteMariage i  WHERE i.id = :id")
+    Optional<InviteMariage> findByInviteMariageId(@Param("id") Integer id);
+
+    @Query("from ProgrammaeMariage i  WHERE i.id = :id")
+    Optional<ProgrammaeMariage> findByProgrammeMariageId(@Param("id") Integer id);
+
 
     List<Invitations> findAllByInviteMariageId(Integer id);
 

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface InvitationService extends AbstractService<InvitationDto>{
 
-    InvitationDto findByInviteId(Integer id);
+    //InvitationDto findByInviteId(Integer id);
     List<InvitationDto> finAllByInvite(Integer id);
 
     String invalidateInvitation(String code);
